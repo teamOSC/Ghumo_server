@@ -1,0 +1,4 @@
+flask
+parsepy
+json
+requests
