@@ -1,6 +1,6 @@
 import copy
 
-import requests
+import requests, json
 
 from credentials import uber_credentials
 
@@ -81,5 +81,40 @@ def taxi_for_sure_api(latitude, longitude):
     return final_list
 
 
+def cabs_guru(lat, lng):
+    url = "http://api.cabsguru.com/services/v2/caboption/p2p"
+
+    headers = {'content-type': 'application/json'}
+    pay = {
+        "pickupTime": 1440186730057,
+        "pickupNow": True,
+        "mobileNo": "",
+        "pickupLocation": {
+            "latitude": str(lat),
+            "longitude": str(lng),
+            #"label": "Shyam Nagar, Okhla Industrial Area, New Delhi"
+        },
+        "dropoffLocation": {
+            "latitude": "28.564193094506155",
+            "longitude": "77.25882723927498",
+            #"label": "Block G,  Sri Niwaspuri"
+        },
+        "distanceMatrix": {
+            "distance": 3961,
+            "distanceText": "4.0 km",
+            "duration": 1023,
+            "durationText": "17 mins"
+        },
+        "uniqueId": "",
+        "deviceId": "358091058388825",
+        "deviceType": "Android",
+        "appversion": "27"
+    }
+
+    data = requests.post(url, data=json.dumps(pay), headers=headers)
+
+    return json.dumps(data.json()['data']['searchcabresponse']['cabOperator'])
+
+
 if __name__ == '__main__':
-    print taxi_for_sure_api(28.739137, 77.124717)
+    print cabs_guru(28.5444571, 77.2721861)

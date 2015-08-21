@@ -9,21 +9,9 @@ def testing():
     return "API Working!"
 
 
-@app.route('/api/travel/cabs', methods=['GET', 'GET'])
+@app.route('/api/cabs', methods=['GET'])
 def travel_api():
     result = []
-
-    ''' ========================Example JSON to be sent===============
-    result = [
-            {
-                'provider': 'provider_name',
-                'time_of_arrival': 'time in minutes',
-                'price_per_km': 'price in INR/Km',
-                'display_name': 'Black/X/GO',
-                'min_price': 'minimum_price',
-            },
-        ]
-    =============================================================='''
 
     try:
         list_of_result = uber_api(request.args.get('lat'), request.args.get('lng'))
@@ -42,3 +30,14 @@ def travel_api():
     final_result = sorted(result, key=lambda k: k['time_of_arrival'])
 
     return json.dumps(final_result)
+
+
+@app.route('/api/newcabs', methods=['GET'])
+def new_cabs():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+
+    try:
+        return cabs_guru(lat, lng)
+    except:
+        return json.dumps([])
