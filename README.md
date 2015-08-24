@@ -1,1 +1,1 @@
-Automation project for Dhodu
+Ghumo Server
